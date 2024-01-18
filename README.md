@@ -2,9 +2,7 @@
 
 > What could be more logical awesome than no logic at all?
 
-[![Build Status](https://travis-ci.org/janl/mustache.js.svg?branch=master)](https://travis-ci.org/janl/mustache.js)
-
-[mustache.js](http://github.com/janl/mustache.js) is a zero-dependency implementation of the [mustache](http://mustache.github.io/) template system in JavaScript.
+[mustache.js](http://github.com/ppodds/mustache.js) is a zero-dependency implementation of the [mustache](http://mustache.github.io/) template system in TypeScript.
 
 [Mustache](http://mustache.github.io/) is a logic-less template syntax. It can be used for HTML, config files, source code - anything. It works by expanding tags in a template using values provided in a hash or object.
 
@@ -16,9 +14,7 @@ For a language-agnostic overview of mustache's template syntax, see the `mustach
 
 You can use mustache.js to render mustache templates anywhere you can use JavaScript. This includes web browsers, server-side environments such as [Node.js](http://nodejs.org/), and [CouchDB](http://couchdb.apache.org/) views.
 
-mustache.js ships with support for the [CommonJS](http://www.commonjs.org/) module API, the [Asynchronous Module Definition](https://github.com/amdjs/amdjs-api/wiki/AMD) API (AMD) and [ECMAScript modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules).
-
-In addition to being a package to be used programmatically, you can use it as a [command line tool](#command-line-tool).
+mustache.js ships with support for the [CommonJS](http://www.commonjs.org/) module API and [ECMAScript modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules).
 
 And this will be your templates after you use Mustache:
 
@@ -29,7 +25,7 @@ And this will be your templates after you use Mustache:
 You can get Mustache via [npm](http://npmjs.com).
 
 ```bash
-$ npm install mustache --save
+$ npm install @ppodds/mustache --save
 ```
 
 ## Usage
@@ -37,11 +33,11 @@ $ npm install mustache --save
 Below is a quick example how to use mustache.js:
 
 ```js
-const Mustache = require('mustache');
+const Mustache = require("@ppodds/mustache");
 
 const view = {
   title: "Joe",
-  calc: () => ( 2 + 4 )
+  calc: () => 2 + 4,
 };
 
 const output = Mustache.render("{{title}} spends {{calc}}", view);
@@ -63,9 +59,9 @@ If you need a template for a dynamic part in a static website, you can consider 
 // file: render.js
 
 function renderHello() {
-  const template = document.getElementById('template').innerHTML;
-  const rendered = Mustache.render(template, { name: 'Luke' });
-  document.getElementById('target').innerHTML = rendered;
+  const template = document.getElementById("template").innerHTML;
+  const rendered = Mustache.render(template, { name: "Luke" });
+  document.getElementById("target").innerHTML = rendered;
 }
 ```
 
@@ -77,7 +73,7 @@ function renderHello() {
       Hello {{ name }}!
     </script>
 
-    <script src="https://unpkg.com/mustache@latest"></script>
+    <script src="https://unpkg.com/@ppodds/mustache@latest"></script>
     <script src="render.js"></script>
   </body>
 </html>
@@ -89,11 +85,11 @@ If your templates reside in individual files, you can load them asynchronously a
 
 ```js
 function renderHello() {
-  fetch('template.mustache')
+  fetch("template.mustache")
     .then((response) => response.text())
     .then((template) => {
-      const rendered = Mustache.render(template, { name: 'Luke' });
-      document.getElementById('target').innerHTML = rendered;    
+      const rendered = Mustache.render(template, { name: "Luke" });
+      document.getElementById("target").innerHTML = rendered;
     });
 }
 ```
@@ -133,12 +129,8 @@ Template:
 Output:
 
 ```html
-* Chris
-*
-* &lt;b&gt;GitHub&lt;/b&gt;
-* <b>GitHub</b>
-* <b>GitHub</b>
-* {{company}}
+* Chris * * &lt;b&gt;GitHub&lt;/b&gt; * <b>GitHub</b> * <b>GitHub</b> *
+{{company}}
 ```
 
 JavaScript's dot notation may be used to access keys that are properties of objects in a view.
@@ -158,15 +150,13 @@ View:
 Template:
 
 ```html
-* {{name.first}} {{name.last}}
-* {{age}}
+* {{name.first}} {{name.last}} * {{age}}
 ```
 
 Output:
 
 ```html
-* Michael Jackson
-* RIP
+* Michael Jackson * RIP
 ```
 
 ### Sections
@@ -192,10 +182,7 @@ View:
 Template:
 
 ```html
-Shown.
-{{#person}}
-Never shown!
-{{/person}}
+Shown. {{#person}} Never shown! {{/person}}
 ```
 
 Output:
@@ -214,11 +201,7 @@ View:
 
 ```json
 {
-  "stooges": [
-    { "name": "Moe" },
-    { "name": "Larry" },
-    { "name": "Curly" }
-  ]
+  "stooges": [{ "name": "Moe" }, { "name": "Larry" }, { "name": "Curly" }]
 }
 ```
 
@@ -251,18 +234,13 @@ View:
 Template:
 
 ```html
-{{#musketeers}}
-* {{.}}
-{{/musketeers}}
+{{#musketeers}} * {{.}} {{/musketeers}}
 ```
 
 Output:
 
 ```html
-* Athos
-* Aramis
-* Porthos
-* D'Artagnan
+* Athos * Aramis * Porthos * D'Artagnan
 ```
 
 If the value of a section variable is a function, it will be called in the context of the current item in the list on each iteration.
@@ -286,18 +264,13 @@ View:
 Template:
 
 ```html
-{{#beatles}}
-* {{name}}
-{{/beatles}}
+{{#beatles}} * {{name}} {{/beatles}}
 ```
 
 Output:
 
 ```html
-* John Lennon
-* Paul McCartney
-* George Harrison
-* Ringo Starr
+* John Lennon * Paul McCartney * George Harrison * Ringo Starr
 ```
 
 #### Functions
@@ -331,7 +304,7 @@ Output:
 
 ### Inverted Sections
 
-An inverted section opens with `{{^section}}` instead of `{{#section}}`. The block of an inverted section is rendered only if the value of that section's tag is `null`, `undefined`, `false`, *falsy* or an empty list.
+An inverted section opens with `{{^section}}` instead of `{{#section}}`. The block of an inverted section is rendered only if the value of that section's tag is `null`, `undefined`, `false`, _falsy_ or an empty list.
 
 View:
 
@@ -344,8 +317,7 @@ View:
 Template:
 
 ```html
-{{#repos}}<b>{{name}}</b>{{/repos}}
-{{^repos}}No repos :({{/repos}}
+{{#repos}}<b>{{name}}</b>{{/repos}} {{^repos}}No repos :({{/repos}}
 ```
 
 Output:
@@ -390,7 +362,6 @@ Mustache requires only this:
 
 Why? Because the `next_more.mustache` file will inherit the `size` and `start` variables from the calling context. In this way you may want to think of partials as includes, imports, template expansion, nested templates, or subtemplates, even though those aren't literally the case here.
 
-
 For example, this template and partial:
 
     base.mustache:
@@ -407,7 +378,7 @@ Can be thought of as a single, expanded template:
 ```html
 <h2>Names</h2>
 {{#names}}
-  <strong>{{name}}</strong>
+<strong>{{name}}</strong>
 {{/names}}
 ```
 
@@ -415,7 +386,7 @@ In mustache.js an object of partials may be passed as the third argument to `Mus
 
 ```js
 Mustache.render(template, view, {
-  user: userTemplate
+  user: userTemplate,
 });
 ```
 
@@ -428,15 +399,17 @@ Custom delimiters can be used in place of `{{` and `}}` by setting the new value
 The `Mustache.tags` property holds an array consisting of the opening and closing tag values. Set custom values by passing a new array of tags to `render()`, which gets honored over the default values, or by overriding the `Mustache.tags` property itself:
 
 ```js
-const customTags = [ '<%', '%>' ];
+const customTags = ["<%", "%>"];
 ```
 
 ##### Pass Value into Render Method
+
 ```js
 Mustache.render(template, view, {}, customTags);
 ```
 
 ##### Override Tags Property
+
 ```js
 Mustache.tags = customTags;
 // Subsequent parse() and render() calls will use customTags
@@ -473,99 +446,44 @@ Mustache.parse(template);
 Mustache.render(template, view);
 ```
 
-## Command line tool
-
-mustache.js is shipped with a Node.js based command line tool. It might be installed as a global tool on your computer to render a mustache template of some kind
-
-```bash
-$ npm install -g mustache
-
-$ mustache dataView.json myTemplate.mustache > output.html
-```
-
-also supports stdin.
-
-```bash
-$ cat dataView.json | mustache - myTemplate.mustache > output.html
-```
-
-or as a package.json `devDependency` in a build process maybe?
-
-```bash
-$ npm install mustache --save-dev
-```
-
-```json
-{
-  "scripts": {
-    "build": "mustache dataView.json myTemplate.mustache > public/output.html"
-  }
-}
-```
-```bash
-$ npm run build
-```
-
-The command line tool is basically a wrapper around `Mustache.render` so you get all the features.
-
-If your templates use partials you should pass paths to partials using `-p` flag:
-
-```bash
-$ mustache -p path/to/partial1.mustache -p path/to/partial2.mustache dataView.json myTemplate.mustache
-```
-
-## Plugins for JavaScript Libraries
-
-mustache.js may be built specifically for several different client libraries, including the following:
-
-  - [jQuery](http://jquery.com/)
-  - [MooTools](http://mootools.net/)
-  - [Dojo](http://www.dojotoolkit.org/)
-  - [YUI](http://developer.yahoo.com/yui/)
-  - [qooxdoo](http://qooxdoo.org/)
-
-These may be built using [Rake](http://rake.rubyforge.org/) and one of the following commands:
-```bash
-$ rake jquery
-$ rake mootools
-$ rake dojo
-$ rake yui3
-$ rake qooxdoo
-```
-
-## TypeScript
-
-Since the source code of this package is written in JavaScript, we follow the [TypeScript publishing docs](https://www.typescriptlang.org/docs/handbook/declaration-files/publishing.html) preferred approach
-by having type definitions available via [@types/mustache](https://www.npmjs.com/package/@types/mustache).
-
 ## Testing
 
 In order to run the tests you'll need to install [Node.js](http://nodejs.org/).
 
+<!--
 You also need to install the sub module containing [Mustache specifications](http://github.com/mustache/spec) in the project root.
+
 ```bash
 $ git submodule init
 $ git submodule update
 ```
+-->
+
 Install dependencies.
+
 ```bash
 $ npm install
 ```
+
 Then run the tests.
+
 ```bash
 $ npm test
 ```
+
+<!--
 The test suite consists of both unit and integration tests. If a template isn't rendering correctly for you, you can make a test for it by doing the following:
 
-  1. Create a template file named `mytest.mustache` in the `test/_files`
-     directory. Replace `mytest` with the name of your test.
-  2. Create a corresponding view file named `mytest.js` in the same directory.
-     This file should contain a JavaScript object literal enclosed in
-     parentheses. See any of the other view files for an example.
-  3. Create a file with the expected output in `mytest.txt` in the same
-     directory.
+1. Create a template file named `mytest.mustache` in the `test/_files`
+   directory. Replace `mytest` with the name of your test.
+2. Create a corresponding view file named `mytest.js` in the same directory.
+   This file should contain a JavaScript object literal enclosed in
+   parentheses. See any of the other view files for an example.
+3. Create a file with the expected output in `mytest.txt` in the same
+   directory.
 
 Then, you can run the test with:
+
 ```bash
 $ TEST=mytest npm run test-render
 ```
@@ -573,24 +491,27 @@ $ TEST=mytest npm run test-render
 ### Browser tests
 
 Browser tests are not included in `npm test` as they run for too long, although they are ran automatically on Travis when merged into master. Run browser tests locally in any browser:
+
 ```bash
 $ npm run test-browser-local
 ```
+
 then point your browser to `http://localhost:8080/__zuul`
 
 ## Who uses mustache.js?
 
 An updated list of mustache.js users is kept [on the Github wiki](https://github.com/janl/mustache.js/wiki/Beard-Competition). Add yourself or your company if you use mustache.js!
+-->
 
 ## Contributing
 
-mustache.js is a mature project, but it continues to actively invite maintainers. You can help out a high-profile project that is used in a lot of places on the web. No big commitment required, if all you do is review a single [Pull Request](https://github.com/janl/mustache.js/pulls), you are a maintainer. And a hero.
+mustache.js is a mature project, but it continues to actively invite maintainers. You can help out a high-profile project that is used in a lot of places on the web. No big commitment required, if all you do is review a single [Pull Request](https://github.com/ppodds/mustache.js/pulls), you are a maintainer. And a hero.
 
 ### Your First Contribution
 
-- review a [Pull Request](https://github.com/janl/mustache.js/pulls)
-- fix an [Issue](https://github.com/janl/mustache.js/issues)
-- update the [documentation](https://github.com/janl/mustache.js#usage)
+- review a [Pull Request](https://github.com/ppodds/mustache.js/pulls)
+- fix an [Issue](https://github.com/ppodds/mustache.js/issues)
+- update the [documentation](https://github.com/ppodds/mustache.js#usage)
 - make a website
 - write a tutorial
 
@@ -598,24 +519,25 @@ mustache.js is a mature project, but it continues to actively invite maintainers
 
 mustache.js wouldn't kick ass if it weren't for these fine souls:
 
-  * Chris Wanstrath / defunkt
-  * Alexander Lang / langalex
-  * Sebastian Cohnen / tisba
-  * J Chris Anderson / jchris
-  * Tom Robinson / tlrobinson
-  * Aaron Quint / quirkey
-  * Douglas Crockford
-  * Nikita Vasilyev / NV
-  * Elise Wood / glytch
-  * Damien Mathieu / dmathieu
-  * Jakub Kuźma / qoobaa
-  * Will Leinweber / will
-  * dpree
-  * Jason Smith / jhs
-  * Aaron Gibralter / agibralter
-  * Ross Boucher / boucher
-  * Matt Sanford / mzsanford
-  * Ben Cherry / bcherry
-  * Michael Jackson / mjackson
-  * Phillip Johnsen / phillipj
-  * David da Silva Contín / dasilvacontin
+- Jan Lehnardt / janl
+- Chris Wanstrath / defunkt
+- Alexander Lang / langalex
+- Sebastian Cohnen / tisba
+- J Chris Anderson / jchris
+- Tom Robinson / tlrobinson
+- Aaron Quint / quirkey
+- Douglas Crockford
+- Nikita Vasilyev / NV
+- Elise Wood / glytch
+- Damien Mathieu / dmathieu
+- Jakub Kuźma / qoobaa
+- Will Leinweber / will
+- dpree
+- Jason Smith / jhs
+- Aaron Gibralter / agibralter
+- Ross Boucher / boucher
+- Matt Sanford / mzsanford
+- Ben Cherry / bcherry
+- Michael Jackson / mjackson
+- Phillip Johnsen / phillipj
+- David da Silva Contín / dasilvacontin
