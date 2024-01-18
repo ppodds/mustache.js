@@ -7,76 +7,59 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
         with:
-          node-version: 14.x
-      - run: npm install
-      - run: npm run test-lint
+          version: 8
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      - run: pnpm install
+      - run: pnpm lint
 
   tests:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [18.x, 20.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
         with:
-          submodules: recursive
+          version: 8
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm install and test
+      - name: pnpm install and test
         run: |
-          npm install
-          npm run test-unit
+          pnpm install
+          pnpm test
 
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
         with:
-          node-version: 14.x
-      - name: npm install and build
+          version: 8
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      - name: pnpm install and build
         run: |
-          npm install
-          npm run build
+          pnpm install
+          pnpm build
       - name: Store build-output for later
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: build-output
-          path: |
-            mustache.js
-            mustache.mjs
-
-  tests-on-legacy:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [0.10.x, 0.12.x, 4.x, 6.x, 8.x]
-
-    needs: build
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: recursive
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Get build-output from build step
-        uses: actions/download-artifact@v2
-        with:
-          name: build-output
-      - name: npm install and test
-        run: |
-          npm install mocha@3 chai@3
-          npm run test-unit
+          path: dist

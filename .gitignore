@@ -11,3 +11,4 @@ test/render-test-browser.js
 .idea/
 mustache.mjs
 mustache.min.js
+dist
