@@ -5,3 +5,4 @@ export * from "./partials";
 export * from "./tags";
 export * from "./config";
 export * from "./context";
+export * from "./scanner";
