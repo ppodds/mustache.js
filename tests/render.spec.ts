@@ -297,20 +297,17 @@ describe("render", () => {
 
   const tests = getTests();
 
-  tests.forEach((test) => {
+  it.each(tests)("knows how to render $name", (test) => {
     const view = eval(test.view);
+    let output;
+    if (test.partial) {
+      output = render(test.template, view, {
+        partial: test.partial,
+      });
+    } else {
+      output = render(test.template, view);
+    }
 
-    it("knows how to render " + test.name, () => {
-      let output;
-      if (test.partial) {
-        output = render(test.template, view, {
-          partial: test.partial,
-        });
-      } else {
-        output = render(test.template, view);
-      }
-
-      expect(output).toBe(test.expect);
-    });
+    expect(output).toBe(test.expect);
   });
 });
