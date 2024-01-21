@@ -299,7 +299,7 @@ export class Writer {
       return "";
     }
     if (typeof value !== "string") {
-      throw new Error(`Cannot render non-string as unescaped value: ${value}`);
+      return value.toString();
     }
     return value;
   }
