@@ -2,7 +2,7 @@ import { Context } from "./context";
 import { escapeRegExp, isArray, isFunction, isWhitespace } from "../utils";
 import { EscapeFunction, WriterConfig } from "./config";
 import { Tags } from "./tags";
-import { TemplateCache } from "./template-cache";
+import { DefaultTemplateCache, TemplateCache } from "./template-cache";
 import { View, ViewFunction } from "./view";
 import { Paritals, PartialFunction, PartialObject } from "./partials";
 import { curlyRe, equalsRe, spaceRe, tagRe, whiteRe } from "./regex";
@@ -26,7 +26,7 @@ export class Writer {
   defaultTags: Tags;
 
   constructor() {
-    this.templateCache = new TemplateCache();
+    this.templateCache = new DefaultTemplateCache();
     this.defaultTags = ["{{", "}}"];
   }
 

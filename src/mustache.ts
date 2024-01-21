@@ -15,7 +15,7 @@ const defaultWriter = new Writer();
  * object with set, get and clear methods. This can also be used to disable
  * the cache by setting it to the literal `undefined`.
  */
-export function setTemplateCache(cache: TemplateCache) {
+export function setTemplateCache(cache: TemplateCache | undefined) {
   defaultWriter.templateCache = cache;
 }
 
@@ -62,7 +62,7 @@ export function render(
  * array of tokens it contains. Doing this ahead of time avoids the need to
  * parse templates on the fly as they are rendered.
  */
-export function parse(template: string, tags: Tags) {
+export function parse(template: string, tags?: Tags) {
   return defaultWriter.parse(template, tags);
 }
 
