@@ -45,7 +45,7 @@ export interface SectionToken {
 }
 
 export interface NestedSectionToken extends SectionToken {
-  [4]: NestedToken[];
+  [4]: (NestedToken | SimpleToken)[];
   [5]: number;
 }
 
@@ -57,7 +57,7 @@ export interface InvertedSectionToken {
 }
 
 export interface NestedInvertedSectionToken extends InvertedSectionToken {
-  [4]: NestedToken[];
+  [4]: (NestedToken | SimpleToken)[];
   [5]: number;
 }
 
@@ -97,6 +97,13 @@ export type Token =
   | PartialToken;
 
 export type NestedToken = NestedSectionToken | NestedInvertedSectionToken;
+
+export type SimpleToken =
+  | TextToken
+  | NameToken
+  | ChangeTagToken
+  | UnEscapedToken
+  | CommentToken;
 
 export type ParsedToken =
   | TextToken
