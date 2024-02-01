@@ -1,6 +1,6 @@
 {
   "name": "@ppodds/mustache",
-  "version": "5.0.0-alpha.1",
+  "version": "5.0.0",
   "description": "Logic-less {{mustache}} templates with JavaScript",
   "author": "ppodds <http://github.com/ppodds/mustache.js>",
   "homepage": "http://github.com/ppodds/mustache.js",
