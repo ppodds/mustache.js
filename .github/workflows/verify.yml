@@ -11,7 +11,7 @@ jobs:
         with:
           submodules: true
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v6
         with:
           version: 8
       - name: Setup Node.js
@@ -33,7 +33,7 @@ jobs:
         with:
           submodules: recursive
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v6
         with:
           version: 8
       - name: Setup Node.js
@@ -53,7 +53,7 @@ jobs:
         with:
           submodules: true
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v6
         with:
           version: 8
       - name: Setup Node.js
